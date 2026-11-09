@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>ระบบประเมินบุคลากร | ผู้รับการประเมิน</title>
+  <title>ระบบประเมินบุคลากร | บุคลากร</title>
   <!-- หน้านี้ครูทำให้ ไม่ต้องแก้ หน้าที่ของเราคือเขียน API ให้หน้านี้เรียกได้ -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
@@ -20,7 +20,6 @@
     .url-bar { background: #1f2933; color: #e5e7eb; font-family: Consolas, monospace; font-size: .9rem; border-radius: .5rem; }
     .url-bar .url { color: #7dd3fc; word-break: break-all; }
     .table td, .table th { vertical-align: middle; }
-    .progress { height: .5rem; }
     @media (max-width: 991px) { .sidebar { display: none !important; } }
   </style>
 </head>
@@ -30,18 +29,19 @@
   <nav class="sidebar d-flex flex-column p-3 gap-1">
     <div class="brand mb-4"><i class="bi bi-clipboard2-check"></i> ระบบประเมินบุคลากร</div>
     <a class="nav-link disabled" href="#"><i class="bi bi-speedometer2 me-2"></i>ภาพรวม</a>
-    <a class="nav-link active" href="#"><i class="bi bi-people me-2"></i>ผู้รับการประเมิน</a>
+    <a class="nav-link active" href="#"><i class="bi bi-people me-2"></i>บุคลากร</a>
+    <a class="nav-link disabled" href="#"><i class="bi bi-calendar-range me-2"></i>รอบการประเมิน</a>
     <a class="nav-link disabled" href="#"><i class="bi bi-list-check me-2"></i>หัวข้อและตัวชี้วัด</a>
     <a class="nav-link disabled" href="#"><i class="bi bi-person-badge me-2"></i>กรรมการผู้ประเมิน</a>
     <a class="nav-link disabled" href="#"><i class="bi bi-bar-chart me-2"></i>รายงาน</a>
-    <div class="mt-auto small text-white-50">เมนูสีจาง = ยังไม่ได้สร้าง จะสร้างในสัปดาห์ต่อ ๆ ไป</div>
+    <div class="mt-auto small text-white-50">เมนูสีจาง = ยังไม่ได้สร้าง จะสร้างในใบสั่งงานถัด ๆ ไป</div>
   </nav>
 
   <main class="flex-grow-1 p-3 p-md-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
       <div>
-        <h4 class="mb-0 fw-bold">ผู้รับการประเมิน</h4>
-        <div class="text-secondary small">รอบ: ประเมินผลการปฏิบัติงาน ภาคเรียนที่ 2/2569</div>
+        <h4 class="mb-0 fw-bold">บุคลากร</h4>
+        <div class="text-secondary small">ใบสั่งงาน #1 · ข้อมูลจากฐานข้อมูล evaluation_db</div>
       </div>
       <span class="badge text-bg-light border"><i class="bi bi-person-circle"></i> ฝ่ายบริหารบุคลากร</span>
     </div>
@@ -56,22 +56,17 @@
           </div>
           <div class="col-6 col-md-3">
             <label class="form-label small mb-1">แผนก</label>
-            <select name="department" class="form-select">
+            <select name="department_id" id="deptSelect" class="form-select">
               <option value="">ทุกแผนก</option>
-              <option>เทคโนโลยีสารสนเทศ</option>
-              <option>การบัญชี</option>
-              <option>การตลาด</option>
-              <option>ช่างไฟฟ้ากำลัง</option>
-              <option>ช่างยนต์</option>
             </select>
           </div>
           <div class="col-6 col-md-3">
-            <label class="form-label small mb-1">สถานะ</label>
-            <select name="status" class="form-select">
-              <option value="">ทุกสถานะ</option>
-              <option value="draft">กำลังกรอก</option>
-              <option value="submitted">ส่งแล้ว รอกรรมการ</option>
-              <option value="completed">ประเมินเสร็จ</option>
+            <label class="form-label small mb-1">บทบาท</label>
+            <select name="role" class="form-select">
+              <option value="">ทุกบทบาท</option>
+              <option value="admin">ฝ่ายบุคลากร</option>
+              <option value="evaluatee">ผู้รับการประเมิน</option>
+              <option value="evaluator">กรรมการ</option>
             </select>
           </div>
           <div class="col-12 col-md-2 d-grid">
@@ -93,20 +88,20 @@
       <div class="table-responsive">
         <table class="table table-hover mb-0">
           <thead class="table-light">
-            <tr><th>id</th><th>ชื่อ-สกุล</th><th>แผนก</th><th>ตำแหน่ง</th><th style="width:160px">ความคืบหน้า</th><th>สถานะ</th><th></th></tr>
+            <tr><th>id</th><th>ชื่อ-สกุล</th><th>บทบาท</th><th>แผนก</th><th>ตำแหน่ง</th><th></th></tr>
           </thead>
-          <tbody id="rows"><tr><td colspan="7" class="text-center text-secondary py-4">กำลังโหลด...</td></tr></tbody>
+          <tbody id="rows"><tr><td colspan="6" class="text-center text-secondary py-4">กำลังโหลด...</td></tr></tbody>
         </table>
       </div>
     </div>
   </main>
 </div>
 
-<!-- หน้าต่างรายละเอียด 1 คน: เรียก GET /api/evaluatees/:id -->
+<!-- หน้าต่างรายละเอียด 1 คน: เรียก GET /api/users/:id -->
 <div class="modal fade" id="detailModal" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
-      <div class="modal-header"><h5 class="modal-title">รายละเอียดผู้รับการประเมิน</h5><button class="btn-close" data-bs-dismiss="modal"></button></div>
+      <div class="modal-header"><h5 class="modal-title">ข้อมูลบุคลากร</h5><button class="btn-close" data-bs-dismiss="modal"></button></div>
       <div class="modal-body" id="detailBody"></div>
       <div class="modal-footer justify-content-between">
         <small class="text-secondary">ลิงก์แชร์: <code id="shareLink"></code></small>
@@ -118,24 +113,39 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-  const STATUS = {
-    draft: ['กำลังกรอก', 'secondary'],
-    submitted: ['ส่งแล้ว รอกรรมการ', 'warning'],
-    completed: ['ประเมินเสร็จ', 'success']
+  // หน้านี้ครูทำให้ ไม่ต้องแก้ หน้าที่ของเราคือเขียน API ให้หน้านี้เรียกได้
+  const ROLE = {
+    admin: ['ฝ่ายบุคลากร', 'primary'],
+    evaluatee: ['ผู้รับการประเมิน', 'secondary'],
+    evaluator: ['กรรมการ', 'warning']
   };
   const $ = (id) => document.getElementById(id);
   const modal = new bootstrap.Modal($('detailModal'));
 
-  function badge(status) {
-    const [text, color] = STATUS[status] || [status || '-', 'light'];
+  function badge(role) {
+    const [text, color] = ROLE[role] || [role || '-', 'light'];
     return `<span class="badge text-bg-${color}">${text}</span>`;
+  }
+
+  // ชื่อแผนก: ถ้า API ส่งมาแค่เลข department_id ให้บอกว่ายังไม่มีชื่อ
+  function deptText(p) {
+    if (p.department) return p.department;
+    if (p.department_id) return `<span class="text-danger">ไม่มีชื่อแผนก (ได้แค่เลข ${p.department_id})</span>`;
+    return '-';
   }
 
   function showAlert(html, color = 'danger') {
     $('alertBox').innerHTML = html ? `<div class="alert alert-${color}">${html}</div>` : '';
   }
 
-  // อ่านคำตอบจากเซิร์ฟเวอร์: รับได้ทั้ง { status, message, data } และ Array ตรง ๆ
+  // ตรวจเกณฑ์รับงาน: ห้ามมี password_hash หลุดออกมาใน JSON
+  function leakWarning(list) {
+    return list.some(p => p && 'password_hash' in p)
+      ? '<b>ผิดเกณฑ์รับงาน:</b> JSON ที่ API ส่งมามีช่อง <code>password_hash</code> (รหัสผ่านที่เข้ารหัสแล้ว) ห้ามส่งออกนอกเซิร์ฟเวอร์'
+      : '';
+  }
+
+  // อ่านคำตอบจากเซิร์ฟเวอร์รูปแบบ { status, message, data }
   async function callApi(url) {
     $('urlText').textContent = decodeURIComponent(url);
     let res;
@@ -152,15 +162,28 @@
   }
 
   function explainError(err) {
-    if (err.kind === 'noserver') return 'ติดต่อเซิร์ฟเวอร์ไม่ได้ ลองดูว่ารัน <code>node index.js</code> อยู่หรือเปล่า';
+    if (err.kind === 'noserver') return 'ติดต่อเซิร์ฟเวอร์ไม่ได้ ลองดูว่ารัน <code>npm run dev</code> อยู่หรือเปล่า';
     if (err.code === 404) return 'เซิร์ฟเวอร์ตอบ 404 แปลว่ายังไม่มี route นี้ หรือหาข้อมูลไม่เจอ';
+    if (err.code === 500) return 'เซิร์ฟเวอร์ตอบ 500 (เกิด error ในโค้ดฝั่งเซิร์ฟเวอร์) ดูข้อความสีแดงใน Terminal';
     return `เซิร์ฟเวอร์ตอบกลับมาแต่ไม่ใช่ JSON (รหัส ${err.code}) ลองเปิด URL นี้ตรง ๆ ในเบราว์เซอร์ดู`;
+  }
+
+  async function loadDepartments() {
+    try {
+      const res = await fetch('/api/departments');
+      const json = await res.json();
+      const list = (json && json.data) || [];
+      $('deptSelect').innerHTML = '<option value="">ทุกแผนก</option>' +
+        list.map(d => `<option value="${d.id}">${d.name}</option>`).join('');
+    } catch (e) {
+      $('deptSelect').innerHTML = '<option value="">(ยังโหลดแผนกไม่ได้)</option>';
+    }
   }
 
   async function loadList() {
     const params = new URLSearchParams();
     new FormData($('searchForm')).forEach((v, k) => { if (v) params.append(k, v); });
-    const url = '/api/evaluatees' + (params.toString() ? '?' + params : '');
+    const url = '/api/users' + (params.toString() ? '?' + params : '');
     showAlert('');
     try {
       const r = await callApi(url);
@@ -171,17 +194,17 @@
       }
       const list = r.data || [];
       $('resultInfo').textContent = `${r.code} · พบ ${list.length} คน`;
+      showAlert(leakWarning(list));
       $('rows').innerHTML = list.length ? list.map(p => `
         <tr>
           <td>${p.id}</td>
           <td class="fw-semibold">${p.full_name}</td>
-          <td>${p.department ?? '-'}</td>
+          <td>${badge(p.role)}</td>
+          <td>${deptText(p)}</td>
           <td>${p.position ?? '-'}</td>
-          <td><div class="progress"><div class="progress-bar" style="width:${p.progress ?? 0}%"></div></div><small class="text-secondary">${p.progress ?? 0}%</small></td>
-          <td>${badge(p.status)}</td>
           <td><button class="btn btn-sm btn-outline-primary" onclick="openDetail(${p.id})">ดู</button></td>
         </tr>`).join('')
-        : '<tr><td colspan="7" class="text-center text-secondary py-4">ไม่พบผู้รับการประเมินที่ตรงกับเงื่อนไข</td></tr>';
+        : '<tr><td colspan="6" class="text-center text-secondary py-4">ไม่พบบุคลากรที่ตรงกับเงื่อนไข</td></tr>';
     } catch (err) {
       $('resultInfo').textContent = '-';
       $('rows').innerHTML = '';
@@ -190,25 +213,25 @@
   }
 
   async function openDetail(id) {
-    const url = '/api/evaluatees/' + id;
+    const url = '/api/users/' + id;
     $('shareLink').textContent = location.origin + location.pathname + '?id=' + id;
     try {
       const r = await callApi(url);
       $('resultInfo').textContent = `รหัส ${r.code}`;
       if (!r.ok || !r.data || Array.isArray(r.data)) {
-        $('detailBody').innerHTML = `<div class="alert alert-warning mb-0">${(r.json && r.json.message) || 'ไม่พบข้อมูล หรือ API ยังตอบเป็นรายการทั้งหมดอยู่'}</div>`;
+        $('detailBody').innerHTML = `<div class="alert alert-warning mb-0">${(r.json && r.json.message) || explainError({ code: r.code })}</div>`;
       } else {
         const p = r.data;
-        $('detailBody').innerHTML = `
+        const leak = leakWarning([p]);
+        $('detailBody').innerHTML = (leak ? `<div class="alert alert-danger">${leak}</div>` : '') + `
           <h5 class="fw-bold">${p.full_name}</h5>
           <table class="table table-sm mb-0">
             <tr><th style="width:35%">id</th><td>${p.id}</td></tr>
-            <tr><th>แผนก</th><td>${p.department ?? '-'}</td></tr>
+            <tr><th>บทบาท</th><td>${badge(p.role)}</td></tr>
+            <tr><th>แผนก</th><td>${deptText(p)}</td></tr>
             <tr><th>ตำแหน่ง</th><td>${p.position ?? '-'}</td></tr>
             <tr><th>อีเมล</th><td>${p.email ?? '-'}</td></tr>
             <tr><th>โทรศัพท์</th><td>${p.phone ?? '-'}</td></tr>
-            <tr><th>สถานะ</th><td>${badge(p.status)}</td></tr>
-            <tr><th>ความคืบหน้า</th><td>${p.progress ?? 0}%</td></tr>
           </table>`;
       }
     } catch (err) {
@@ -218,6 +241,7 @@
   }
 
   $('searchForm').addEventListener('submit', (e) => { e.preventDefault(); loadList(); });
+  loadDepartments();
   loadList();
   // เปิดลิงก์แบบ ?id=3 แล้วเด้งรายละเอียดคนนั้นขึ้นมาเลย
   const sharedId = new URLSearchParams(location.search).get('id');
